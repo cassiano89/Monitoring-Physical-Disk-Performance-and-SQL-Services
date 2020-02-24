@@ -1,0 +1,49 @@
+Configuring zabbix to monitor Disks with Perfmon metrics and SQL services
+
+
+-Place the script in powershell in the Zabbix folder on Windows
+ -Change the zabbix agent configuration file on Windows
+
+- Change the Timeout to = 10s
+- Insert the userparameter defined in zabbix
+- UserParameter=windowsdisk.discovery, powershell -NoProfile -ExecutionPolicy Bypass -File c:\zabbix\get_disks.ps1
+
+(
+OBS:
+  User parameter is = windowsdisk.discovery
+  )
+
+- save a file and restart zabbix agent to windows.
+
+(
+OBS:
+  
+  all metrics to Perfmon get in this place.
+  HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Perflib\009.
+  )
+  
+  - Change the timeout in configuration file in zabbix server
+   Zabbix_agentd.conf
+   
+   - restart zabbix server agent
+   - Install zabbx_get in server
+   - Import template to zabbix server
+   - Create a host
+   - Insert template to host
+   
+   - execute command in zabbix server to teste
+    zabbix_get -s "IP Windows Server" -p 10050 -k "windowsdisk.discovery"
+    
+    must return disks list do windows bellow.
+    "data":[
+
+{ "{#DISKNUMLET}" : "0 C:" },
+{ "{#DISKNUMLET}" : "1 I:" },
+{ "{#DISKNUMLET}" : "2 D:" },
+{ "{#DISKNUMLET}" : "3 O:" },
+{ "{#DISKNUMLET}" : "4 L:" }
+
+ ]
+}
+
+ 
